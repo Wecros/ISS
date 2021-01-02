@@ -68,9 +68,6 @@ def output():
     # Get the part of the maskoff_tone that is most similar to the 1s of maskon
     maskoff = get_similar_subsignal(maskon, maskoff)
 
-
-    print(len(maskon), len(maskoff))
-
     maskon_center = centralize_signal(maskon)
     maskoff_center = centralize_signal(maskoff)
     maskon_normal = normalize_signal(maskon_center)

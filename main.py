@@ -21,8 +21,11 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
         save = True
 
-    #ex3.main(save)
+    ex3.main(save)
     ex4.main(save)
+
+    if save:
+        print('All graphs saved to the "output" folder')
 
 
 if __name__ == '__main__':
