@@ -12,13 +12,7 @@ import numpy as np
 from sklearn.preprocessing import minmax_scale
 from lib import open_wave, centralize_signal, normalize_signal, \
                 get_signal_frames, ms2sample, SAMPLE_RATE, \
-                get_similar_subsignal, OUTPUT_PATH
-
-
-def save_figure(fig):
-    fig.savefig(OUTPUT_PATH + 'ex3.png')
-    fig.savefig(OUTPUT_PATH + 'ex3-transparent.png', transparent=True)
-    fig.savefig(OUTPUT_PATH + 'ex3.pdf')
+                get_similar_subsignal, OUTPUT_PATH, save_figure
 
 
 def plot(on, off, save):
@@ -43,7 +37,7 @@ def plot(on, off, save):
     ax_off.set_ylim(-1, 1)
 
     if save:
-        save_figure(fig)
+        save_figure(fig, 'ex3')
     else:
         plt.show()
 

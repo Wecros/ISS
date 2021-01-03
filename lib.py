@@ -105,3 +105,9 @@ def auto_correlate(signal):
     """Return the relevant part of the autocorellated signal."""
     cor = np.correlate(signal, signal, 'full')
     return cor[cor.size//2:]
+
+
+def save_figure(fig, name):
+    fig.savefig(OUTPUT_PATH + f'{name}.png')
+    fig.savefig(OUTPUT_PATH + f'{name}-transparent.png', transparent=True)
+    fig.savefig(OUTPUT_PATH + f'{name}.pdf')

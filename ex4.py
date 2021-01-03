@@ -10,19 +10,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from sklearn.preprocessing import minmax_scale
-from lib import clip_centre, SAMPLE_RATE, OUTPUT_PATH, auto_correlate
+from lib import clip_centre, SAMPLE_RATE, OUTPUT_PATH, auto_correlate, \
+                save_figure
 
 import ex3
 
 
-def save_figure(fig):
-    fig.savefig(OUTPUT_PATH + 'ex4.png')
-    fig.savefig(OUTPUT_PATH + 'ex4-transparent.png', transparent=True)
-    fig.savefig(OUTPUT_PATH + 'ex4.pdf')
-
-
 def plot(frame, clipped, auto, lag, threshold, freq, save):
-    """Plot one frame of the maskon/maskoff signals."""
+    """
+    Plot the maskon clip and autocorrelation, plot the frequencies of
+    maskon and maskoff signals.
+    """
     fig, axes = plt.subplots(4, constrained_layout=True)
     fig.set_size_inches(8.0, 8.0)
     fig.canvas.set_window_title('Excercise 4')
@@ -59,7 +57,7 @@ def plot(frame, clipped, auto, lag, threshold, freq, save):
     ax_freq.set_ylabel('f0')
 
     if save:
-        save_figure(fig)
+        save_figure(fig, 'ex4')
     else:
         plt.show()
 
@@ -78,21 +76,16 @@ def main(save=False):
     maskon_frames, maskoff_frames = ex3.output()
 
     maskon = maskon_frames[0]
-    maskoff = maskoff_frames[3]
     # Apply centre clipping with 70% threshold
     maskon_clip = clip_centre(maskon)
-    maskoff_clip = clip_centre(maskoff)
-
     # Apply autocorrelation
     maskon_auto  = auto_correlate(maskon_clip)
-    maskoff_auto = auto_correlate(maskoff_clip)
 
     # Find the index of maximum coeficient - lag 
     # The beginning part of the autocorrelation will always be the highest,
     # therefore we need to pick a beginning threshold (e.g. 500 Hz)
     threshold: int = SAMPLE_RATE // 500
     maskon_lag = [maskon_auto[threshold:].argmax() + threshold, maskon_auto[threshold:].max()]
-    maskoff_lag = [maskoff_auto[threshold:].argmax() + threshold, maskoff_auto[threshold:].max()]
 
     maskon_frequencies = [get_frequency(frame) for frame in maskon_frames]
     maskoff_frequencies = [get_frequency(frame) for frame in maskoff_frames]
