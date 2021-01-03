@@ -15,6 +15,7 @@ from sklearn.preprocessing import minmax_scale
 SAMPLE_RATE = 16000
 AUDIO_PATH = '../audio/'
 OUTPUT_PATH = '../output/'
+N = 1024  # Number for calculating spectrums
 
 
 # Function definitions
@@ -119,7 +120,12 @@ def save_figure(fig, name):
 
 
 def compute_log_spectogram(arr):
-    """Compute the coeficients of the logaritmhic spectogram."""
+    """
+    Compute the coeficients of the logaritmhic spectogram.
+
+    Abs transforms the complex number into the real plane.
+    Logarithm is there to make the plotted graph more interesting.
+    """
     return 10 * np.log10(abs(arr) ** 2)
 
 

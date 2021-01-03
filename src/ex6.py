@@ -11,7 +11,7 @@ import numpy as np
 import scipy.signal
 
 from lib import clip_centre, SAMPLE_RATE, OUTPUT_PATH, auto_correlate, \
-                save_figure, compute_log_spectogram
+                save_figure, compute_log_spectogram, N
 
 import ex3
 
@@ -35,24 +35,30 @@ def plot(char, save):
 
 
 def output():
-    """Return the frequency characteristic filter."""
+    """
+    Return the frequency characteristic filter tuple.
+
+    1st - output used for further excercises
+    2nd - output used for plotting
+    """
     maskon_frames, maskoff_frames = ex3.output()
 
     # Get the maskon and maskoff DFTs
-    N = 1024
     maskon_dfts = np.fft.fft(maskon_frames, n=N)
     maskoff_dfts = np.fft.fft(maskoff_frames, n=N)
 
     fraction = maskon_dfts / maskoff_dfts
 
     # Make the values absolute
-    fraction_abs = compute_log_spectogram(fraction)
-    return [np.mean([frame[i] for frame in fraction_abs]) for i in range(N//2)]
+    fraction_abs = np.abs(fraction)
+    fraction_plot = compute_log_spectogram(fraction)
+    return [np.mean([frame[i] for frame in fraction_abs]) for i in range(N)], \
+           [np.mean([frame[i] for frame in fraction_plot]) for i in range(N)]
 
 
 def main(save=False):
-    freqz_char_filter = output()
-    plot(freqz_char_filter, save)
+    _, freqz_char_filter = output()
+    plot(freqz_char_filter[:N//2], save)
 
 
 if __name__ == '__main__':

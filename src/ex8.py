@@ -15,17 +15,16 @@ from lib import open_wave, centralize_signal, normalize_signal, \
                 get_similar_subsignal, OUTPUT_PATH, save_figure, \
                 compute_log_spectogram, wave_write, get_tones
 
-import ex3
 import ex7
 
 
 def plot(on, off, sim, save):
     """Plot the frequency characterstic filter of the maskon/maskoff tones."""
-    fig, axes = plt.subplots(3, constrained_layout=True)
-    fig.set_size_inches(8.0, 6.0)
+    fig, axes = plt.subplots(4, constrained_layout=True)
+    fig.set_size_inches(8.0, 8.0)
     fig.canvas.set_window_title('Excercise 6')
 
-    ax_off, ax_on, ax_sim = axes
+    ax_off, ax_on, ax_sim, ax_diff = axes
 
     off_time = np.linspace(0, off.size / SAMPLE_RATE, num=off.size)
     on_time = np.linspace(0, on.size / SAMPLE_RATE, num=on.size)
@@ -34,10 +33,14 @@ def plot(on, off, sim, save):
     ax_off.plot(off_time, off, c='red')
     ax_on.plot(on_time, on, c='green')
     ax_sim.plot(sim_time, sim)
+    ax_diff.plot(sim_time, sim, label='simulated mask-on', alpha=0.9)
+    ax_diff.plot(off_time, off, c='red', label='mask-off', alpha=0.85)
+    ax_diff.legend(loc=4)
 
     ax_off.set_title('Mask-off sentence')
     ax_on.set_title('Mask-on sentence')
     ax_sim.set_title('Simulated mask-on sentence')
+    ax_diff.set_title('Difference between mask-off and simulated mask-on')
 
     for ax in axes:
         ax.set_xlabel('time [s]')
@@ -77,8 +80,8 @@ def main(save=False):
 
     # Simulate the sentence and tone
     imp_lat = ex7.output()
-    sim_sen = scipy.signal.lfilter(imp_lat, [1.0], maskoffsen)
-    sim_tone = scipy.signal.lfilter(imp_lat, [1.0], maskoff)
+    sim_sen = scipy.signal.lfilter(imp_lat, [1], maskoffsen)
+    sim_tone = scipy.signal.lfilter(imp_lat, [1], maskoff)
 
     wave_write('sim_maskon_sentence.wav', sim_sen)
     wave_write('sim_maskon_tone.wav', sim_tone)

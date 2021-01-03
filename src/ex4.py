@@ -43,8 +43,8 @@ def plot(frame, clipped, auto, lag, threshold, freq, save):
     ax_freq.plot(freq[0], 'g-', label='mask-on')
     ax_freq.plot(freq[1], 'r-', label='mask-off')
 
-    ax_auto.legend()
-    ax_freq.legend(loc=1)
+    ax_auto.legend(loc=1)
+    ax_freq.legend(loc=0)
 
     ax_frame.set_title('Maskon frame')
     ax_clipped.set_title('Central clipping with 70%')

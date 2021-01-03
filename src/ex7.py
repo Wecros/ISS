@@ -11,7 +11,7 @@ import numpy as np
 import scipy.signal
 
 from lib import clip_centre, SAMPLE_RATE, OUTPUT_PATH, auto_correlate, \
-                save_figure, compute_log_spectogram
+                save_figure, compute_log_spectogram, N
 
 import ex6
 
@@ -36,9 +36,7 @@ def plot(char, save):
 
 def output():
     """Return the frequency characteristic filter."""
-    freqz_char_filter = ex6.output()
-    # inv_fft = np.array(shape=(99, 1024), dtype=complex)
-    N = 1024
+    freqz_char_filter, _ = ex6.output()
     inv_fft = np.fft.ifft(freqz_char_filter, n=N)
     imp_lat = np.real(inv_fft)
 
