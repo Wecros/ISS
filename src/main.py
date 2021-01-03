@@ -25,10 +25,10 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
         save = True
 
-    # ex3.main(save)
-    # ex4.main(save)
-    # ex5.main(save)
-    # ex6.main(save)
+    ex3.main(save)
+    ex4.main(save)
+    ex5.main(save)
+    ex6.main(save)
     ex7.main(save)
     ex8.main(save)
 

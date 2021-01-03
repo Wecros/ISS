@@ -13,8 +13,8 @@ from sklearn.preprocessing import minmax_scale
 
 # Constants
 SAMPLE_RATE = 16000
-AUDIO_PATH = 'audio/'
-OUTPUT_PATH = 'output/'
+AUDIO_PATH = '../audio/'
+OUTPUT_PATH = '../output/'
 
 
 # Function definitions
