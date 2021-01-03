@@ -16,6 +16,8 @@ import ex3
 import ex4
 import ex5
 import ex6
+import ex7
+import ex8
 
 
 def main():
@@ -27,6 +29,8 @@ def main():
     # ex4.main(save)
     # ex5.main(save)
     ex6.main(save)
+    ex7.main(save)
+    # ex8.main(save)
 
     if save:
         print('All graphs saved to the "output" folder')

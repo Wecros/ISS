@@ -4,6 +4,9 @@
 # Date: 2020/12/28
 # Details: Auxiliary bash script generating useful information for the protocol.
 
+# Set the script's location as the pwd
+cd "$(dirname "$0")" || exit 1
+
 # CONSTANTS
 readonly SAMPLE_RATE=16000
 readonly audio_files=(../audio/*)
@@ -19,8 +22,6 @@ function show_audio_file() {
 }
 
 # CODE LOGIC
-# Set the script's location as the pwd
-cd "$(dirname "$0")" || exit 1
 
 # List the audio files and their length
 for file in "${audio_files[@]}"; do

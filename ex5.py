@@ -11,7 +11,7 @@ import numpy as np
 
 from sklearn.preprocessing import minmax_scale
 from lib import clip_centre, SAMPLE_RATE, OUTPUT_PATH, auto_correlate, \
-                save_figure
+                save_figure, compute_log_spectogram
 
 import ex3
 
@@ -49,9 +49,8 @@ def main(save=False):
     maskon_dfts = np.fft.fft(maskon_frames, n=N)
     maskoff_dfts = np.fft.fft(maskoff_frames, n=N)
 
-    compute_values = lambda arr: 10 * np.log10(abs(arr) ** 2)
-    maskon_spectogram = compute_values(maskon_dfts)
-    maskoff_spectogram = compute_values(maskoff_dfts)
+    maskon_spectogram = compute_log_spectogram(maskon_dfts)
+    maskoff_spectogram = compute_log_spectogram(maskoff_dfts)
     maskon_spectogram = maskon_spectogram.transpose()
     maskoff_spectogram = maskoff_spectogram.transpose()
 

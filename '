@@ -43,7 +43,7 @@ def output():
     maskon_dfts = np.fft.fft(maskon_frames, n=N)
     maskoff_dfts = np.fft.fft(maskoff_frames, n=N)
 
-    fraction = maskon_dfts / maskoff_dfts
+    fraction = maskoff_dfts / maskon_dfts
 
     # Make the values absolute
     fraction_abs = compute_log_spectogram(fraction)

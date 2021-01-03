@@ -111,3 +111,9 @@ def save_figure(fig, name):
     fig.savefig(OUTPUT_PATH + f'{name}.png')
     fig.savefig(OUTPUT_PATH + f'{name}-transparent.png', transparent=True)
     fig.savefig(OUTPUT_PATH + f'{name}.pdf')
+
+
+def compute_log_spectogram(arr):
+    """Compute the coeficients of the logaritmhic spectogram."""
+    return 10 * np.log10(abs(arr) ** 2)
+
