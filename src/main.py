@@ -22,8 +22,12 @@ import ex8
 
 def main():
     save = False
-    if len(sys.argv) > 1 and sys.argv[1] == '--save':
+    user = False
+
+    if '--save' in sys.argv:
         save = True
+    if '--user' in sys.argv:
+        user = True
 
     ex3.main(save)
     ex4.main(save)
