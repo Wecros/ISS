@@ -14,7 +14,7 @@ from sklearn.preprocessing import minmax_scale
 # Constants
 SAMPLE_RATE = 16000
 AUDIO_PATH = '../audio/'
-OUTPUT_PATH = '../output/'
+OUTPUT_PATH = 'output/'
 N = 1024  # Number for calculating spectrums
 
 
