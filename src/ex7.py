@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Author: Marek Filip <wecros|xfilip46>
 # Date: 2020/01/03
