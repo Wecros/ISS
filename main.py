@@ -15,6 +15,7 @@ from lib import open_wave, centralize_signal, normalize_signal
 import ex3
 import ex4
 import ex5
+import ex6
 
 
 def main():
@@ -24,7 +25,8 @@ def main():
 
     # ex3.main(save)
     # ex4.main(save)
-    ex5.main(save)
+    # ex5.main(save)
+    ex6.main(save)
 
     if save:
         print('All graphs saved to the "output" folder')

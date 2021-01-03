@@ -45,9 +45,6 @@ def plot(maskon, maskoff, save):
 def main(save=False):
     maskon_frames, maskoff_frames = ex3.output()
 
-    maskon = maskon_frames[0]
-    maskoff = maskoff_frames[16]
-
     N = 1024
     maskon_dfts = np.fft.fft(maskon_frames, n=N)
     maskoff_dfts = np.fft.fft(maskoff_frames, n=N)
