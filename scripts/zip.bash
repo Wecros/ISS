@@ -8,8 +8,5 @@
 cd "$(dirname "$0")" || exit 1
 cd .. # Project's root folder
 
-# Clean the python cache
-rm -rf src/__pycache__
-
 # Create the archive
-tar -czf xfilip46.tar.gz src/ audio/
+tar --exclude='output/*' --exclude '__pycache__' -czf xfilip46.tar.gz src/ audio/
