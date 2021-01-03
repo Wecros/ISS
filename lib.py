@@ -6,6 +6,7 @@ import sys
 import wave
 
 import numpy as np
+import scipy.io.wavfile
 
 from sklearn.preprocessing import minmax_scale
 
@@ -19,6 +20,10 @@ OUTPUT_PATH = 'output/'
 # Function definitions
 def open_wave(filename, mode):
     return wave.open(AUDIO_PATH + filename, mode=mode)
+
+
+def wave_write(filename, data):
+    scipy.io.wavfile.write(AUDIO_PATH + filename, SAMPLE_RATE, data.astype(np.int16))
 
 
 def centralize_signal(signal):
@@ -117,3 +122,33 @@ def compute_log_spectogram(arr):
     """Compute the coeficients of the logaritmhic spectogram."""
     return 10 * np.log10(abs(arr) ** 2)
 
+
+def get_tones():
+    """Get the maskon/off tones."""
+    # The whole recording of maskoff/on tones
+    maskon_wav: wave.Wave_read = open_wave('maskon_tone.wav', 'rb')
+    maskoff_wav: wave.Wave_read = open_wave('maskoff_tone.wav', 'rb')
+    # Get the bytes' frames
+    maskon_frames: bytes = maskon_wav.readframes(-1)
+    maskoff_frames: bytes = maskoff_wav.readframes(-1)
+    # Close the files
+    maskon_wav.close()
+    maskoff_wav.close()
+
+    # Get the signals as arrays
+    maskon: np.ndarray = np.frombuffer(maskon_frames, dtype=np.int16)
+    maskoff: np.ndarray = np.frombuffer(maskoff_frames, dtype=np.int16)
+
+    return maskon, maskoff
+
+
+def get_tones_1s():
+    """Get the most similar 1s of two input tones."""
+    maskon, maskoff = get_tones()
+
+    # Cut the maskon sound to 1s - 16,000 samples
+    maskon = maskon[200:16200]
+    # Get the part of the maskoff_tone that is most similar to the 1s of maskon
+    maskoff = get_similar_subsignal(maskon, maskoff)
+
+    return maskon, maskoff

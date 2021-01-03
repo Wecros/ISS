@@ -40,13 +40,14 @@ def output():
     # inv_fft = np.array(shape=(99, 1024), dtype=complex)
     N = 1024
     inv_fft = np.fft.ifft(freqz_char_filter, n=N)
-    imp_lat = compute_log_spectogram(inv_fft)
-    return imp_lat
+    imp_lat = np.real(inv_fft)
+
+    return imp_lat[:N//2]
 
 
 def main(save=False):
     imp_lat = output()
-    plot(imp_lat[:len(imp_lat)//2], save)
+    plot(imp_lat, save)
 
 
 if __name__ == '__main__':

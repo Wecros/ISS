@@ -12,7 +12,8 @@ import numpy as np
 from sklearn.preprocessing import minmax_scale
 from lib import open_wave, centralize_signal, normalize_signal, \
                 get_signal_frames, ms2sample, SAMPLE_RATE, \
-                get_similar_subsignal, OUTPUT_PATH, save_figure
+                get_similar_subsignal, OUTPUT_PATH, save_figure, \
+                get_tones_1s
 
 
 def plot(on, off, save):
@@ -26,12 +27,12 @@ def plot(on, off, save):
     ax_on.plot(time, on, 'tab:green')
     ax_off.plot(time, off, 'tab:red')
 
-    ax_on.set_title('20ms of the maskon tone')
+    ax_on.set_title('20ms of the mask-on tone')
     ax_on.set_xlabel('time [s]')
     ax_on.set_ylabel('y')
     ax_on.set_ylim(-1, 1)
 
-    ax_off.set_title('20ms of the maskoff tone')
+    ax_off.set_title('20ms of the mask-off tone')
     ax_off.set_xlabel('time [s]')
     ax_off.set_ylabel('y')
     ax_off.set_ylim(-1, 1)
@@ -44,23 +45,8 @@ def plot(on, off, save):
 
 def output():
     """Return two frames of the maskon/maskoff tones."""
-    # Chosen 1000ms part of maskon_tone
-    # maskon_wav: wave.Wave_read = open_wave('maskon_tone_1s.wav', 'rb')
-    maskon_wav: wave.Wave_read = open_wave('maskon_tone.wav', 'rb')
-    # The whole recording of maskoff_tone
-    maskoff_wav: wave.Wave_read = open_wave('maskoff_tone.wav', 'rb')
-    maskon_frames: bytes = maskon_wav.readframes(-1)
-    maskoff_frames: bytes = maskoff_wav.readframes(-1)
-    maskon_wav.close()
-    maskoff_wav.close()
-
-    maskon: np.ndarray = np.frombuffer(maskon_frames, dtype=np.int16)
-    maskoff: np.ndarray = np.frombuffer(maskoff_frames, dtype=np.int16)
-
-    # Cut the maskon sound to 1s - 16,000 samples
-    maskon = maskon[200:16200]
-    # Get the part of the maskoff_tone that is most similar to the 1s of maskon
-    maskoff = get_similar_subsignal(maskon, maskoff)
+    # Get the maskon/maskoff 1s tones
+    maskon, maskoff = get_tones_1s()
 
     maskon_center = centralize_signal(maskon)
     maskoff_center = centralize_signal(maskoff)

@@ -12,9 +12,11 @@ import scipy.signal
 
 from lib import open_wave, centralize_signal, normalize_signal, \
                 get_signal_frames, ms2sample, SAMPLE_RATE, \
-                get_similar_subsignal, OUTPUT_PATH, save_figure
+                get_similar_subsignal, OUTPUT_PATH, save_figure, \
+                compute_log_spectogram, wave_write, get_tones
 
 import ex3
+import ex7
 
 
 def plot(on, off, sim, save):
@@ -25,19 +27,22 @@ def plot(on, off, sim, save):
 
     ax_off, ax_on, ax_sim = axes
 
-    # time = np.linspace(0, on.size[0] / SAMPLE_RATE, num=on.size)
-    ax_off.plot(off, c='red')
-    ax_on.plot(on, c='green')
-    ax_sim.plot(on, c='yellow')
+    off_time = np.linspace(0, off.size / SAMPLE_RATE, num=off.size)
+    on_time = np.linspace(0, on.size / SAMPLE_RATE, num=on.size)
+    sim_time = np.linspace(0, sim.size / SAMPLE_RATE, num=sim.size)
 
-    ax_off.set_title('Maskoff sentence')
-    ax_on.set_title('Maskon sentence')
-    ax_sim.set_title('Simulated maskon sentence')
+    ax_off.plot(off_time, off, c='red')
+    ax_on.plot(on_time, on, c='green')
+    ax_sim.plot(sim_time, sim)
+
+    ax_off.set_title('Mask-off sentence')
+    ax_on.set_title('Mask-on sentence')
+    ax_sim.set_title('Simulated mask-on sentence')
 
     for ax in axes:
         ax.set_xlabel('time [s]')
         ax.set_ylabel('y')
-        ax.set_ylim(-1, 1)
+        # ax.set_ylim(-1, 1)
 
     if save:
         save_figure(fig, 'ex8')
@@ -54,8 +59,8 @@ def main(save=False):
     maskonsen_wav.close()
     maskoffsen_wav.close()
 
-    # Get the maskon/maskoff 1s tones (frames)
-    maskon_frames, maskoff_frames = ex3.output()
+    # Get the maskon/maskoff tones
+    maskon, maskoff = get_tones()
 
     # Get the maskonsen/maskoffsen arrays 
     maskonsen: np.ndarray = np.frombuffer(maskonsen_frames, dtype=np.int16)
@@ -70,7 +75,15 @@ def main(save=False):
     maskonsen_frames = get_signal_frames(maskonsen_normal)
     maskoffsen_frames = get_signal_frames(maskoffsen_normal)
 
-    plot(maskonsen_normal, maskoffsen_normal, save)
+    # Simulate the sentence and tone
+    imp_lat = ex7.output()
+    sim_sen = scipy.signal.lfilter(imp_lat, [1.0], maskoffsen)
+    sim_tone = scipy.signal.lfilter(imp_lat, [1.0], maskoff)
+
+    wave_write('sim_maskon_sentence.wav', sim_sen)
+    wave_write('sim_maskon_tone.wav', sim_tone)
+
+    plot(maskonsen, maskoffsen, sim_sen, save)
 
 
 if __name__ == '__main__':

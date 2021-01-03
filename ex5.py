@@ -29,8 +29,8 @@ def plot(maskon, maskoff, save):
     im_off = ax_off.imshow(maskoff, origin='lower', aspect='auto', extent = [0 , 1.0, 0 , 8000])
     fig.colorbar(im_off, ax=ax_off)
 
-    ax_on.set_title('Maskon spectogram')
-    ax_off.set_title('Maskoff spectogram')
+    ax_on.set_title('Mask-on spectogram')
+    ax_off.set_title('Mask-off spectogram')
 
     for ax in axes:
         ax.set_xlabel('time [s]')
